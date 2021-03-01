@@ -1,0 +1,48 @@
+<%- include ('../../blocks/admin-header.ejs') %>
+
+
+<div class="container edit-plant-container">
+    <div class="col-6 align-content-center">
+        <div class="media">
+            <div class="row justify-content-md-center plant-info">
+                <img class="plant-info__img align-self-start" src="/public/images/1.png" alt="...">
+                <form class="plant-edit-form">
+                    <div class="form-group">
+                        <label for="plantNameField">Наименование растения</label>
+                        <input type="text" class="form-control" id="plantNameField">
+                    </div>
+                    <div class="form-group">
+                        <label for="plantTypeField">Тип растения</label>
+                        <select class="form-control" id="plantTypeField">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plantWindowField">Подходящее окно для освещения</label>
+                        <select class="form-control" id="plantWindowField">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plantRequirementsField">Описание и требования по уходу</label>
+                        <textarea class="form-control" id="plantRequirementsField" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group edit-plant-container__button-block">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include ('../../blocks/footer.ejs') %>

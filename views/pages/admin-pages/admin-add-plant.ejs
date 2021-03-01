@@ -1,0 +1,46 @@
+<%- include ('../../blocks/admin-header.ejs') %>
+
+<div class="container edit-plant-container">
+    <div class="col-6 align-content-center">
+        <div class="media">
+            <div class="row justify-content-md-center plant-info">
+                <img class="plant-info__img align-self-start" src="/public/images/1.png" alt="...">
+                <form method="POST" action="{% url 'plants:admin_add_plant_action' %}" class="plant-edit-form">
+
+                    <div class="form-group">
+                        <label for="plantNameField">Наименование</label>
+                        <input name="plant_name" type="text" class="form-control" id="plantNameField"
+                               value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="plantTypeField">Тип растения</label>
+                        <select class="form-control" id="plantTypeField" name="plant_type">
+                            {% for plant_type in all_plant_types %}
+                            <option value="{{plant_type.id}}">{{plant_type.plant_type_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plantWindowField">Подходящее окно для освещения</label>
+                        <select class="form-control" id="plantWindowField" name="plant_window_type">
+                            {% for window_type in all_window_types %}
+                            <option value="{{window_type.id}}">{{window_type.window_type_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plantRequirementsField">Описание и требования по уходу</label>
+                        <textarea class="form-control" id="plantRequirementsField" rows="3" name="plant_requirements">
+                            {{plant_info.plant_requirements}}</textarea>
+                    </div>
+
+                    <div class="form-group edit-plant-container__button-block">
+                        <button type="submit" class="btn btn-primary">Добавить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include ('../../blocks/footer.ejs') %>
