@@ -46,13 +46,58 @@ app.get('/', (req, res) => {
 
 });
 
-app.get('/plant', (req, res) => {
-    res.render('pages/user-pages/user-plant', {title: "Папопротник"});
-});
+app.get('/plant/:id', (req, res) => {
+    let plant_info = [];
+    let plant_type_info = [];
+    let window_type_info = [];
+    pull.getConnection((err, connection) => {
+        if (err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        // query (sqlString, callback)
+        connection.query('SELECT * FROM plant WHERE id = ?', [req.params.id], (err, plantRows) => {
+            if (err) {
+                return console.log(err)
+            }
+            plant_info = plantRows[0]
+            connection.query('SELECT * FROM plant_type WHERE id = ?', [plant_info.plant_type], (err, typesRows) => {
+                plant_type_info = typesRows[0]
+                
+                connection.query('SELECT * FROM window_type WHERE id = ?', [plant_info.window_type], (err, windowRows) => {
+                    window_type_info = windowRows[0]
+
+                    res.render('pages/user-pages/user-plant', {
+                        title: plant_info.name,
+                        plant: plant_info,
+                        plant_type: plant_type_info,
+                        window_type: window_type_info
+                    });
+                })
+            })
+        })
+    })
+
+})
+
 
 // Admin links
 app.get('/admin', (req, res) => {
-    res.render('pages/admin-pages/admin-main', {title: "Растения (вид админа)"});
+
+    pull.getConnection((err, connection) => {
+        if (err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        // query (sqlString, callback)
+        connection.query('SELECT * FROM plant', (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if (!err) {
+                res.render('pages/admin-pages/admin-main', {title: "Растения (вид админа)", plants: rows});
+            } else {
+                console.log(err)
+            }
+        })
+    })
 });
 
 app.get('/admin/add-plant', (req, res) => {
@@ -60,8 +105,50 @@ app.get('/admin/add-plant', (req, res) => {
 });
 
 app.get('/admin/edit-plant', (req, res) => {
-    res.render('pages/admin-pages/admin-edit-plant', {title: "Редактировать растение (вид админа)"});
+    let plant_types = [];
+    let window_types = [];
+
+    // Get all plant types
+    pull.getConnection((err, connection) => {
+        if (err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        // query (sqlString, callback)
+        connection.query('SELECT * FROM plant_type', (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if (!err) {
+                plant_types = rows;
+            } else {
+                console.log(err)
+            }
+        })
+    })
+
+    // Get all window types
+    pull.getConnection((err, connection) => {
+        if (err) throw err
+        console.log(`connected as id ${connection.threadId}`)
+
+        // query (sqlString, callback)
+        connection.query('SELECT * FROM window_type', (err, rows) => {
+            connection.release() // return the connection to pool
+
+            if (!err) {
+                window_types = rows;
+            } else {
+                console.log(err)
+            }
+        })
+    })
+    console.log(plant_types)
+    console.log(window_types)
+    res.render('pages/admin-pages/admin-edit-plant', {
+        title: "Редактировать растение (вид админа)", plant_types: plant_types,
+        window_types: window_types
+    });
 });
 
 // Listen on environment port or 5000
 app.listen(port, () => console.log(`Listen on port ${port}`))
+
