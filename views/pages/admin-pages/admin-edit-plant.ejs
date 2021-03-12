@@ -6,34 +6,32 @@
         <div class="media">
             <div class="row justify-content-md-center plant-info">
                 <img class="plant-info__img align-self-start" src="/public/images/1.png" alt="...">
-                <form class="plant-edit-form">
+                <form method="POST" class="plant-edit-form" action="/admin/edit-action-plant/<%= plant.id %>">
                     <div class="form-group">
                         <label for="plantNameField">Наименование растения</label>
-                        <input type="text" class="form-control" id="plantNameField">
+                        <input name="name" type="text" class="form-control" id="plantNameField" value=<%= plant.name %>>
                     </div>
                     <div class="form-group">
                         <label for="plantTypeField">Тип растения</label>
-                        <select class="form-control" id="plantTypeField">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                        <select name="plant_type" class="form-control" id="plantTypeField">
+                            <% all_plant_types.forEach(function (plant_type) { %>
+                                <option <%if (plant.plant_type == plant_type.id){ %> selected <%}%>
+                                        value="<%= plant_type.id%>"><%= plant_type.name%></option>
+                            <% }) %>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="plantWindowField">Подходящее окно для освещения</label>
-                        <select class="form-control" id="plantWindowField">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                        <select name="window_type" class="form-control" id="plantWindowField">
+                            <% all_window_types.forEach(function (window_type) { %>
+                            <option <%if (plant.window_type == window_type.id){ %> selected <%}%>
+                                    value="<%= window_type.id%>"><%= window_type.name%></option>
+                            <% }) %>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="plantRequirementsField">Описание и требования по уходу</label>
-                        <textarea class="form-control" id="plantRequirementsField" rows="3"></textarea>
+                        <textarea name="requirements" class="form-control" id="plantRequirementsField" rows="3"><%= plant.requirements %></textarea>
                     </div>
 
                     <div class="form-group edit-plant-container__button-block">

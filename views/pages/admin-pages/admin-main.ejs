@@ -5,7 +5,7 @@
         <h1 class="text-center">Список всех растений</h1>
         <% plants.forEach(function (plant) { %>
             <div class="list-item">
-                <a class="media plants-list__item" href="/admin/edit-plant">
+                <a class="media plants-list__item" href="/admin/edit-plant/<%= plant.id %>">
                     <div class="row justify-content-md-center">
                         <div class="plants-list__img">
                             <img src="/public/images/1.png" class="align-self-start mr-3" alt="...">
@@ -18,10 +18,10 @@
                 </a>
                 <div class="list-item__buttons">
                     <div class="list-item__button">
-                        <a href="#" class="btn-danger">Удалить</a>
+                        <a href="/admin/delete-action-plant/<%= plant.id %>" class="btn-danger">Удалить</a>
                     </div>
                     <div class="list-item__button">
-                        <a href="/admin/edit-plant" class="btn-success">Изменить</a>
+                        <a href="/admin/edit-plant/<%plant.id%>" class="btn-success">Изменить</a>
                     </div>
                 </div>
             </div>
